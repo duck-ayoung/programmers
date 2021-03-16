@@ -1,0 +1,25 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int sum;
+
+void combination(int index, int target, vector<int> numbers, int temp) {
+	if (numbers.size() == index) {
+		if (temp == target) {
+			sum++;
+		}
+		return;
+	}
+
+	combination(index + 1, target, numbers, temp + numbers[index]);
+	combination(index + 1, target, numbers, temp - numbers[index]);
+
+}
+
+int solution(vector<int> numbers, int target) {
+	sum = 0;
+	combination(0, target, numbers, 0);
+	return sum;
+}
