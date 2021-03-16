@@ -1,0 +1,33 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+bool visit[200];
+
+void dfs(int index, int n, vector<vector<int>> computers) {
+	if (index == n) return;
+
+	visit[index] = true;
+
+	for (int i = 0; i < n; i++) {
+		if (i == index || visit[i] == true || computers[index][i]==0) continue;
+		dfs(i, n, computers);
+	}
+
+}
+
+int solution(int n, vector<vector<int>> computers) {
+	int answer = 0;
+
+	for (int i = 0; i < n; i++) {
+		visit[i] = false;
+	}
+	for (int i = 0; i < n; i++) {
+		if (visit[i] == false) {
+			answer++;
+			dfs(i, n, computers);
+		}
+	}
+	return answer;
+}
