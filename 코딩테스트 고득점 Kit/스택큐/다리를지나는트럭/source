@@ -1,0 +1,37 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    public int solution(int bridge_length, int weight, int[] truck_weights) {
+      int answer = 0;
+
+      Queue<Integer> queue = new LinkedList();
+      for (int i = 0; i < bridge_length; i++) {
+        queue.add(0);
+      }
+      int truck_index = 0;
+      int truck_nums = truck_weights.length;
+      int bridge_weight = 0;
+      while (true) {
+        answer++;
+        int temp = queue.poll();
+        bridge_weight -= temp;
+        if (weight >= bridge_weight + truck_weights[truck_index]) {
+          bridge_weight += truck_weights[truck_index];
+          queue.add(truck_weights[truck_index++]);
+        } else
+          queue.add(0);
+
+        if (truck_index == truck_nums)
+          break;
+      }
+
+      while (!queue.isEmpty()) {
+        answer++;
+        queue.poll();
+      }
+
+      System.out.print(answer);
+      return answer;
+    }
+}
