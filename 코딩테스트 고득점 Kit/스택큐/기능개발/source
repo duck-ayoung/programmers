@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+
+class Solution {
+	public int[] solution(int[] progresses, int[] speeds) {
+		ArrayList<Integer> answer = new ArrayList();
+		int prevProgress = 0;
+		int progressesNum = progresses.length;
+		int passDay = 0;
+		while (prevProgress < progressesNum) {
+			int deployNum = 1;
+			int needsDay = (100 - progresses[prevProgress] - speeds[prevProgress] * passDay) / speeds[prevProgress];
+			if (((100 - progresses[prevProgress] - speeds[prevProgress] * passDay) % speeds[prevProgress]) != 0)
+				needsDay++;
+
+			prevProgress++;
+			for (int i = prevProgress; i < progressesNum; i++) {
+				int workRate = progresses[i] + speeds[i] * passDay + speeds[i] * needsDay;
+				if (workRate < 100)
+					break;
+				prevProgress++;
+				deployNum++;
+			}
+			passDay += needsDay;
+			answer.add(deployNum);
+		}
+
+		int[] result = new int[answer.size()];
+		for (int i = 0; i < answer.size(); i++) {
+			result[i] = answer.get(i);
+
+		}
+		return result;
+	}
+}
