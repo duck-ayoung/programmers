@@ -1,0 +1,22 @@
+import java.util.PriorityQueue;
+
+class Solution {
+    public int solution(int[] scoville, int K) {
+        int answer = 0;
+        PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
+        for(int i=0; i<scoville.length; i++) {
+        	heap.add(scoville[i]);
+        }
+        
+        while(heap.size()>1 && heap.peek()<K) {
+        	int most_min = heap.poll();
+        	int second_min = heap.poll();
+
+        	heap.add(most_min + second_min*2);
+        	answer++;
+        }
+        
+        
+        return heap.peek()>=K ? answer : -1;
+    }
+}
