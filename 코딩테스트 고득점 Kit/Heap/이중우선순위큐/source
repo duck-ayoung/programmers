@@ -1,0 +1,115 @@
+import java.util.PriorityQueue;
+
+
+class Solution {
+	public static int toInteger(String str) {
+		int sum = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if(str.charAt(i)=='-') {
+				continue;
+			}
+			sum = sum * 10 + (str.charAt(i) - '0');
+		}
+
+		if(str.charAt(0)=='-') {
+			sum *= -1;
+		}
+		return sum;
+	}
+
+	public static class NodeInfoAscending implements Comparable<NodeInfoAscending> {
+		int index;
+		int value;
+
+		public NodeInfoAscending(int index, int value) {
+			super();
+			this.index = index;
+			this.value = value;
+		}
+
+		@Override
+		public int compareTo(NodeInfoAscending o) {
+			return this.value - o.value;
+		}
+
+	}
+
+	public static class NodeInfoDescending implements Comparable<NodeInfoDescending> {
+		int index;
+		int value;
+
+		public NodeInfoDescending(int index, int value) {
+			super();
+			this.index = index;
+			this.value = value;
+		}
+
+		@Override
+		public int compareTo(NodeInfoDescending o) {
+			return o.value - this.value;
+		}
+
+	}
+
+	public static int[] solution(String[] operations) {
+		int[] answer = {0,0};
+		boolean[] is_vaild = new boolean[1000000];
+
+		for (int i = 0; i < 1000000; i++) {
+			is_vaild[i] = true;
+		}
+
+		PriorityQueue<NodeInfoAscending> heap_ascending = new PriorityQueue<>();
+		PriorityQueue<NodeInfoDescending> heap_descending = new PriorityQueue<>();
+		int index = 0;
+		for (int i = 0; i < operations.length; i++) {
+			String[] temp = operations[i].split(" ");
+
+			int num = toInteger(temp[1]);
+			if (operations[i].charAt(0) == 'I') {
+				heap_ascending.add(new NodeInfoAscending(index, num));
+				heap_descending.add(new NodeInfoDescending(index, num));
+				index++;
+			} else if (operations[i].charAt(0) == 'D') {
+				if (num == 1) {
+					while (!heap_descending.isEmpty()) {
+						if (is_vaild[heap_descending.peek().index] == true) {
+							is_vaild[heap_descending.poll().index] = false;
+							break;
+						} else {
+							heap_descending.poll();
+						}
+					}
+				} else {
+					while (!heap_ascending.isEmpty()) {
+						if (is_vaild[heap_ascending.peek().index] == true) {
+							is_vaild[heap_ascending.poll().index] = false;
+							break;
+						} else {
+							heap_ascending.poll();
+						}
+					}
+				}
+			}
+		}
+		while (!heap_descending.isEmpty()) {
+			if (is_vaild[heap_descending.peek().index] == true) {
+				answer[0] = heap_descending.peek().value;
+				break;
+			} else {
+				heap_descending.poll();
+			}
+		}
+		while (!heap_ascending.isEmpty()) {
+			if (is_vaild[heap_ascending.peek().index] == true) {
+				answer[1] = heap_ascending.peek().value;
+				break;
+			} else {
+				heap_ascending.poll();
+			}
+		}
+		
+		return answer;
+	}
+
+}
