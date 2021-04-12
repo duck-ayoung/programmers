@@ -1,0 +1,37 @@
+class Solution {
+    public int solution(int n, int[] lost, int[] reserve) {
+        int noGymSuitPeople = 0;
+        
+        boolean[] isLost = new boolean[n];
+        boolean[] isReserve = new boolean[n];
+        
+        for(int i=0;i<n;i++) {
+        	isLost[i]=isReserve[i]=false;
+        }
+        for(int i=0; i<lost.length; i++) {
+        	isLost[lost[i]-1] = true;
+        }
+        for(int i=0;i<reserve.length;i++) {
+        	if(isLost[reserve[i]-1]) { 
+        		isLost[reserve[i]-1] = false;
+        		continue;
+        	}
+        	isReserve[reserve[i]-1] = true;
+        }
+        
+        for(int i=0;i<n;i++) {
+        	if(isLost[i]) {
+        		if(i>0 && isReserve[i-1]) { 
+        			continue;
+        		} else if(i<n-1 && isReserve[i+1]) {
+        			isReserve[i+1] = false;
+        			continue;
+        		} else {
+        			noGymSuitPeople++;
+        		}
+        	}
+        }
+        
+        return n-noGymSuitPeople;
+    }
+}
