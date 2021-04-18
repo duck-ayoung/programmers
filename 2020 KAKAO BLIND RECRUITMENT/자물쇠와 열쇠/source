@@ -1,0 +1,65 @@
+class Solution {
+	public static int[][] rotateArray(int[][] src) {
+		int[][] des = new int[src.length][src.length];
+		for(int i=0; i < des.length; i++) {
+			for(int j=0; j< des.length; j++) {
+				des[i][j] = src[des.length-j-1][i];
+			}
+		}
+		return des;
+	}
+	public static boolean solution(int[][] key, int[][] lock) {
+        int countHole = 0;
+        int[][] new_lock = new int[lock.length * 3][lock.length * 3];
+
+        for(int i=0; i<new_lock.length; i++) {
+        	for(int j=0; j<new_lock.length;j++) {
+        		new_lock[i][j] = -1;
+        	}
+        }
+        for(int i=0; i<lock.length; i++) {
+        	for(int j=0; j<lock.length;j++) {
+        		new_lock[lock.length+i][lock.length+j] = lock[i][j];
+        		if(lock[i][j]==0) {
+        			countHole++;
+        		}
+        	}
+        }
+        
+        for(int k=0;k<4;k++) {
+        	for(int i=0; i<new_lock.length - key.length; i++) {
+            	for(int j=0; j<new_lock.length - key.length;j++) {
+            		boolean is_success = true;
+                int countMatched = 0;
+            		for(int i2=0;i2<key.length && is_success;i2++) {
+            			for(int j2=0; j2<key.length; j2++ ) {
+            				if(new_lock[i+i2][j+j2] == -1) continue;
+            				else if(new_lock[i+i2][j+j2] == 1) {
+            					if(key[i2][j2] == 1) {
+            						is_success = false;
+            						break;
+            					}
+            				} else {
+            					if(key[i2][j2] == 0) {
+            						is_success = false;
+            						break;
+            					} else {
+            						countMatched++;
+            					}
+            				}
+            			}
+            		}
+            		
+            		if(is_success && countMatched == countHole) {
+            			return true;
+            		}
+            	}
+            }
+        	
+        	key = rotateArray(key);
+        }
+        
+        
+        return false;
+    }
+}
