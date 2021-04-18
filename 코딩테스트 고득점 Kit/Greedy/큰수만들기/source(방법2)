@@ -1,0 +1,40 @@
+import java.util.Stack;
+
+class Solution {
+    public static String solution(String number, int k) {
+String answer = "";
+    	Stack<Character> stack = new Stack<Character>();
+    	
+		int i = 0;
+		for (; i < number.length(); i++) {
+			if (k == 0)
+				break;
+			if (!stack.isEmpty()) {
+				if (stack.peek() < number.charAt(i)) {
+					while (k > 0 && !stack.isEmpty()) {
+						if (stack.peek() < number.charAt(i)) {
+							stack.pop();
+							k--;
+						} else {
+							break;
+						}
+					}
+				}
+			}
+			stack.add(number.charAt(i));
+		}
+
+		for (; i < number.length(); i++) {
+			stack.add(number.charAt(i));
+		}
+        
+		while(k>0) {
+			stack.pop();
+			k--;
+		}
+		while(!stack.isEmpty()) {
+			answer = stack.pop() + answer;
+		}
+		return answer;
+    }
+}
