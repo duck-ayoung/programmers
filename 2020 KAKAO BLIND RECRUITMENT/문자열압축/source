@@ -1,0 +1,53 @@
+class Solution {
+  public static int solution(String s) {
+        int answer = s.length();
+        String[][] subString = new String[s.length()/2][s.length()];
+        for(int i=0; i<s.length()/2; i++) {
+        	int index=0;
+        	for(int j=0;j<s.length() && s.length() >= j+1+i;j+=(i+1)) {
+        		subString[i][index++] = s.substring(j, j+i+1);
+        	}
+        }
+        
+        for(int i=0; i<s.length()/2; i++) {
+        	int baseIndex=0;
+        	int sumCount=0;
+        	int count=0;
+        	int addNum = 0;
+        	int length = s.length();
+        	for(int j=1;j<s.length()/(i+1);j++) {
+        		if(subString[i][j].compareTo(subString[i][baseIndex])==0) {
+        			count++;
+        			sumCount++;
+        		} else {
+        			if(count > 0 ) {
+						addNum = 0;
+		        		int tempCount = count+1;
+						while (tempCount > 0) {
+							tempCount = tempCount / 10;
+							addNum++;
+						}
+						length += addNum - (count*(i+1));
+        			}
+        			baseIndex = j;
+        			count = 0;
+        		}
+        	}
+        	
+        	if(count > 0 ) {
+        		addNum = 0;
+        		int tempCount = count+1;
+        		while(tempCount>0) {
+        			tempCount = tempCount/10;
+        			addNum++;
+        		}
+				length += addNum - (count*(i+1));
+			}
+
+        	if(answer > length) 
+        		answer = length;
+        }
+
+        return answer;
+    }
+}
