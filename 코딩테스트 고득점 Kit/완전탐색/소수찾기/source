@@ -1,0 +1,41 @@
+import java.util.HashSet;
+
+class Solution {
+	static HashSet<Integer> findDecimal = new HashSet<>();
+
+	public static boolean isDecimal(int num) {
+		for (int i = 2; i * i <= num; i++) {
+			if (num % i == 0)
+				return false;
+		}
+		if (num < 2)
+			return false;
+		return true;
+	}
+
+	public static void makeNum(int nowNumber, String numbers, boolean[] visit) {
+		if (!findDecimal.contains(nowNumber)) {
+			if (isDecimal(nowNumber))
+				findDecimal.add(nowNumber);
+		}
+
+		for (int i = 0; i < numbers.length(); i++) {
+			if (!visit[i]) {
+				visit[i] = true;
+				makeNum(nowNumber * 10 + numbers.charAt(i) - '0', numbers, visit);
+				visit[i] = false;
+			}
+		}
+	}
+  
+	public static int solution(String numbers) {
+		int answer = 0;
+		findDecimal.clear();
+		boolean[] visit = new boolean[numbers.length()];
+		for (int i = 0; i < visit.length; i++) {
+			visit[i] = false;
+		}
+		makeNum(0, numbers, visit);
+		return findDecimal.size();
+	}
+}
