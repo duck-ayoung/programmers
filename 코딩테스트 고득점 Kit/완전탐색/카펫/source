@@ -1,0 +1,15 @@
+class Solution {
+	public static int[] solution(int brown, int yellow) {
+		int[] answer = new int[2];
+		for(int raw=3;raw<brown/2;raw++ ) {
+			int col = (brown - (raw-2)*2)/2;
+			if((col-2)*(raw-2) == yellow) {
+				answer[0] = col;
+				answer[1] = raw;
+				break;
+			}
+		}
+		
+		return answer;
+	}
+}
