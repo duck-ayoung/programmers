@@ -1,0 +1,50 @@
+import java.util.Arrays;
+
+class Solution {
+    public static int[] solution(int[] lottos, int[] win_nums) {
+        int[] answer = new int[2];
+    
+        Arrays.sort(lottos);
+        
+        int lottos_index = 0;
+        int zero_count=0;
+        for(int i=0; i<lottos.length; i++) {
+        	if(lottos[i]!=0) { 
+        		lottos_index = i;
+        		break;
+        	}
+        	zero_count++;
+        }
+        int same_count = 0;
+		for (; lottos_index < lottos.length; lottos_index++) {
+			for (int i = 0; i < win_nums.length; i++) {
+				if(lottos[lottos_index] == win_nums[i]) {
+					same_count++;
+					break;
+				}
+			}
+		}
+		
+
+		answer[0] = check_rank(same_count + zero_count);
+		answer[1] = check_rank(same_count);
+        return answer;
+    }
+    
+	public static int check_rank(int count) {
+		switch (count) {
+		case 6:
+			return 1;
+		case 5:
+			return 2;
+		case 4:
+			return 3;
+		case 3:
+			return 4;
+		case 2:
+			return 5;
+		default:
+			return 6;
+		}
+	}
+}
