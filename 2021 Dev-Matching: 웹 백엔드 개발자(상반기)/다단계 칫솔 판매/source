@@ -1,0 +1,38 @@
+
+import java.util.HashMap;
+
+class Solution {
+
+    static HashMap<String, Integer> nameMap = new HashMap<>();
+	  static HashMap<String, String> referralMap = new HashMap<>();
+     
+	public static void profitDistribution(String name, int profit, int[] answer) {
+		int index = nameMap.get(name);
+		int profit90 = profit - (profit/10);
+		int profit10 = profit/10;
+		answer[index] += profit90;
+		if(referralMap.get(name) != null) {
+			profitDistribution(referralMap.get(name), profit10, answer);
+		}
+	}
+	public static int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
+        int[] answer = new int[enroll.length];
+        
+        nameMap.clear();
+        referralMap.clear();
+        
+        for(int i=0;i <enroll.length; i++) {
+        	answer[i] = 0;
+        	nameMap.put(enroll[i], i);
+        	if(referral[i].charAt(0) != '-') {
+        		referralMap.put(enroll[i], referral[i]);
+        	}
+        }
+        
+        
+        for(int i=0; i<seller.length;i++) {
+        	profitDistribution(seller[i], amount[i]*100, answer);
+        }
+        return answer;
+    }
+}
