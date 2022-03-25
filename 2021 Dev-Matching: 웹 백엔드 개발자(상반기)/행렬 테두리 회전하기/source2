@@ -1,0 +1,83 @@
+public class Solution {
+    static int[][] arr = new int[101][101];
+
+    public int[] solution(int rows, int columns, int[][] queries) {
+        int[] answer = new int[queries.length];
+
+        initArr(arr, rows, columns);
+
+        for(int i=0; i<queries.length; i++) {
+
+            int x1 = queries[i][0];
+            int y1 = queries[i][1];
+            int x2 = queries[i][2];
+            int y2 = queries[i][3];
+
+            int temp = arr[x1][y1];
+            int min = temp;
+            //y++
+            for(int j=y1+1; j<=y2; j++) {
+                int nextNum = arr[x1][j];
+                arr[x1][j] = temp;
+                temp = nextNum;
+                if (temp < min) {
+                    min = temp;
+                }
+            }
+
+            //x++
+            for(int j=x1+1; j<=x2; j++) {
+                int nextNum = arr[j][y2];
+                arr[j][y2] = temp;
+                temp = nextNum;
+                if (temp < min) {
+                    min = temp;
+                }
+            }
+
+            //y--
+            for(int j=y2-1; j>=y1; j--) {
+                int nextNum = arr[x2][j];
+                arr[x2][j] = temp;
+                temp = nextNum;
+                if (temp < min) {
+                    min = temp;
+                }
+            }
+
+            //x--
+            for(int j=x2-1; j>=x1; j--) {
+                int nextNum = arr[j][y1];
+                arr[j][y1] = temp;
+                temp = nextNum;
+                if (temp < min) {
+                    min = temp;
+                }
+            }
+            answer[i] = min;
+        }
+        return answer;
+    }
+
+    public static void initArr(int[][] arr, int rows, int columns) {
+        int num = 1;
+        for(int i=1; i<=rows; i++) {
+            for(int j=1; j<=columns; j++) {
+                arr[i][j] = num++;
+            }
+        }
+    }
+
+
+    public static void print(int[][] arr, int rows, int columns) {
+        int num = 1;
+        for (int i = 1; i <= rows; i++) {
+            for (int j = 1; j <= columns; j++) {
+                System.out.print(String.format("%2d ", arr[i][j]));
+            }
+            System.out.println();
+        }
+
+    }
+
+}
