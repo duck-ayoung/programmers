@@ -1,0 +1,45 @@
+import java.util.HashMap;
+
+class Solution {
+
+        public static void goMoney(int nowIndex, int nowMoney, int[] answer, int[] parent) {
+        if(nowMoney < 10) {
+            answer[nowIndex] += nowMoney;
+            return;
+        }
+
+        int nextMoney = (int) (nowMoney * 0.1);
+        answer[nowIndex] += nowMoney - nextMoney;
+        if(parent[nowIndex] != -1) {
+            goMoney(parent[nowIndex], nextMoney, answer, parent);
+        }
+    }
+
+    public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
+        HashMap<String, Integer> name = new HashMap<>();
+        int peopleNum = enroll.length;
+        int[] answer  = new int[peopleNum];
+        int[] parent = new int[peopleNum];
+        for(int i=0; i<peopleNum; i++) {
+            answer[i] = 0;
+        }
+        for(int i = 0; i<peopleNum; i++) {
+            name.put(enroll[i], i);
+            if(referral[i].equals("-")) {
+                parent[i] = -1;
+            } else {
+                Integer parentIndex = name.get(referral[i]);
+                parent[i] = parentIndex;
+            }
+        }
+
+        int sellerCount = seller.length;
+        for(int i = 0; i<sellerCount; i++) {
+            int sellerIndex = name.get(seller[i]);
+            int price = 100 * amount[i];
+            goMoney(sellerIndex, price, answer, parent);
+        }
+        return answer;
+    }
+
+}
